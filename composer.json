@@ -1,5 +1,5 @@
 {
-  "name": "tangjun/sys-audit-log",
+  "name": "tangjun/operation-log",
   "description": "A laravel package of sys audit log",
   "keywords": ["laravel","SysAuditLog"],
 
