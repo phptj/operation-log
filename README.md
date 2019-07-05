@@ -5,7 +5,7 @@ Laravel 5 操作日志自动记录
 ## 安装
 
 可以通过 [Composer](http://getcomposer.org) 安装
-`tangjun/sys-audit-log`， 在`composer.json`require部分引入，然后执行 ```composer install```或```composer update```（注意 ：composer update会更新你其他没有固定本部的组件）.
+`tangjun/operation-log`， 在`composer.json`require部分引入，然后执行 ```composer install```或```composer update```（注意 ：composer update会更新你其他没有固定本部的组件）.
 
 ```json
 {

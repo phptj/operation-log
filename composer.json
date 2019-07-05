@@ -1,7 +1,7 @@
 {
   "name": "tangjun/operation-log",
   "description": "A laravel package of sys audit log",
-  "keywords": ["laravel","SysAuditLog"],
+  "keywords": ["laravel","operation-log"],
 
   "license": "MIT",
   "authors": [
