@@ -1,0 +1,23 @@
+{
+  "name": "tangjun/sys-audit-log",
+  "description": "A laravel package of sys audit log",
+  "keywords": ["laravel","SysAuditLog"],
+
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "tangjun",
+      "email": "469307838@qq.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0"
+  },
+
+  "autoload": {
+    "psr-4": {
+      "TangJun\\SysAuditLog\\": "src/"
+    }
+  }
+ 
+}
