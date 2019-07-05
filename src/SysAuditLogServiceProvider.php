@@ -22,7 +22,7 @@ class SysAuditLogServiceProvider extends ServiceProvider
 
 
         $this->publishes([
-            __DIR__.'/config/actionlog.php' => config_path('sysauditlog.php'),
+            __DIR__.'/config/sysauditlog.php' => config_path('sysauditlog.php'),
         ], 'config');
 
         $model = config("sysauditlog.entities");

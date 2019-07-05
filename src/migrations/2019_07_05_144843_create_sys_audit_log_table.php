@@ -1,9 +1,10 @@
 <?php
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CrateActionLogTable extends Migration
+class CreateSysAuditLogTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +13,6 @@ class CrateActionLogTable extends Migration
      */
     public function up()
     {
-
         Schema::create('sys_audit_log', function (Blueprint $table) {
             $table->increments('id');
             $table->string("action",20)->comment("动作：create、update、delete");
@@ -27,7 +27,6 @@ class CrateActionLogTable extends Migration
             $table->string("system",50)->comment("操作系统");
             $table->string("url",150)->comment('url');
             $table->string("content")->comment("操作描述");
-
             $table->timestamps();
         });
     }
@@ -39,6 +38,6 @@ class CrateActionLogTable extends Migration
      */
     public function down()
     {
-        Schema::drop('sys_audit_log');
+        Schema::dropIfExists('sys_audit_log');
     }
 }
