@@ -40,17 +40,29 @@ class SysAuditLogRepository {
     private function handleUpdate($data,$type){
         $sysAuditModel = new SysAuditLog;
         $insertArray = [];
-        if(Auth::guard('admin')->user()){
-            $adminId = @Auth::guard('admin')->user()->id;
-            $insertArray['create_id'] = self::getCreateId($adminId);
-        }elseif(Auth::user()){
-            $userId = @Auth::user()->id;
-            $insertArray['create_id'] = $userId;
+        $userInfo = session('user_info');
+        $vendorId = session('aDecryptVendorId');
+        if(isset($userInfo->id)){
+            $insertArray['create_id'] = $userInfo->id;
+        }elseif(empty($vendorId)){
+            $insertArray['create_id'] = $vendorId;
         }
-        $insertArray['table_name'] = !empty($data['table'])?$data['table']:'';
-        $attributes = !empty($data['attributes'])?$data['attributes']:[];
-        $original = !empty($data['original'])?$data['original']:[];
+
+        $tableFunction = function() {return $this->table;};
+        $table = $tableFunction->call($data);
+
+        $attributesFunction = function() {return $this->attributes;};
+        $attributes = $attributesFunction->call($data);
+
+        $originalFunction = function() {return $this->original;};
+        $original = $originalFunction->call($data);
+
+        $insertArray['table_name'] = !empty($table)?$table:'';
+        $attributes = !empty($attributes)?$attributes:[];
+        $original = !empty($original)?$original:[];
+
         $updateArray = self::checkAttributesChange($attributes,$original);
+
         if(!empty($updateArray) && is_array($updateArray)){
             foreach ($updateArray as $key => $val){
                 $insertArray['action'] = $type;
@@ -58,6 +70,8 @@ class SysAuditLogRepository {
                 $insertArray['key_id'] = $val['key_id'] ;
                 $insertArray['orig_value'] = $val['orig_value'];
                 $insertArray['new_value'] = $val['new_value'];
+                $insertArray['create_batch_mark'] = $val['create_batch_mark'];
+                $insertArray['create_time'] = time();
                 $sysAuditModel->create($insertArray);
             }
         }
@@ -85,6 +99,8 @@ class SysAuditLogRepository {
         $insertArray['key_id'] = !empty($data['attributes']['id'])?$data['attributes']['id']:0;
         $insertArray['orig_value'] = '';
         $insertArray['new_value'] = '';
+        $insertArray['create_batch_mark'] = microtime(true);
+        $insertArray['create_time'] = time();
         $sysAuditModel->create($insertArray);
         return true;
     }
@@ -114,6 +130,8 @@ class SysAuditLogRepository {
 
         $updateArray = [];
 
+        $createBatchMark = microtime(true);
+
         foreach ($attributes as $key => $val){
             //创建时间、更新时间、删除时间字段值的变更不记录
             if(in_array($key,['created_at','updated_at','deleted_at'])){
@@ -125,7 +143,7 @@ class SysAuditLogRepository {
                     'key_id'=>$original['id'],
                     'new_value'=> $val,
                     'orig_value'=> $original[$key],
-
+                    'create_batch_mark'=>$createBatchMark,
                 ];
             }
         }
