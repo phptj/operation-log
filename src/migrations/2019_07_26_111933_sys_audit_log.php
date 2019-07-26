@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSysAuditLogTable extends Migration
+class SysAuditLog extends Migration
 {
     /**
      * Run the migrations.
@@ -22,11 +22,8 @@ class CreateSysAuditLogTable extends Migration
             $table->string("orig_value",1000)->comment("字段之前的值");
             $table->string("new_value",1000)->comment("字段修改之后的值");
             $table->integer("create_id")->comment("用户id");
-            $table->string("ip","50")->comment("操作者ip");
-            $table->string("browser",150)->comment("浏览器");
-            $table->string("system",50)->comment("操作系统");
-            $table->string("url",150)->comment('url');
-            $table->string("content")->comment("操作描述");
+            $table->string("create_batch_mark","50")->comment("操作标识");
+            $table->string("create_time",150)->comment("发生时间");
             $table->timestamps();
         });
     }
